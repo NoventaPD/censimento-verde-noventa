@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        
+        <title>Cens. Nov PD_Gestione</title>
+        <link rel="icon" type="image/x-icon" href="stemma_favicon.ico">
+
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+    
+        <style>
+            body {
+                font-family: 'Montserrat', sans-serif;
+            }
+            header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background-color: white;
+                color: black;
+                padding: 15px;
+            }
+            header img {
+                margin-right: 20px;
+            }
+            .title {
+                font-size: 30px;
+                font-weight: bold;
+            }
+            .subtitle {
+                font-size: 15px;
+            }
+            footer {
+                background-color: #006d77;
+                color: white;
+                padding: 30px;
+            }
+            .footer-title {
+                font-size: 16px;
+                font-weight: bold;
+            }
+            .footer-text {
+                font-size: 14px;
+            }
+            .footer-small-text {
+                font-size: 12px;
+            }
+            footer a {
+                color: white;
+            }
+            
+             .home-icon, .help-icon, .info-button{
+              text-decoration:none;
+              color:black;
+              font-size:20px
+             }
+    
+             .info-button{
+              text-decoration:none;
+              color:rgb(29, 177, 69);
+              font-size:20px
+             }
+             
+             .home-button, .help-button, .info-button{
+              display:flex; 
+              align-items:center; 
+              justify-content:center; 
+              width:40px; 
+              height:40px; 
+              border-radius:50%;
+             }
+             
+             .help-button{
+               margin-right:5px
+             }
+             
+             .info-button{
+               margin-right:50px
+             }
+    
+             a.header-link{
+               text-decoration:none; 
+               color:black
+             }
+        </style>
+    </head>
+    
+    <body>
+        <header>
+          <a class="header-link" href="../index.html">
+            <div style="display:flex; align-items:center;">
+              <img src="https://comune.noventa.pd.it/zf/index.php/kamaleonte/index/logo/preview/0" alt="Logo" height="80px">
+              <div>
+                  <div class="title">Censimento verde pubblico 2023</div>
+                  <div class="subtitle">Comune di Noventa Padovana</div>
+              </div>
+            </div>
+          </a>
+            
+             <div style="display:flex;">
+               <a class="home-button" href="../index.html"><span class="home-icon material-icons">home</span></a>
+             </div>
+        </header>
+
+<!-- FASCIA PRIORITA' E GESTIONALE -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+    body {
+        font-family: 'Montserrat', Arial, sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        gap: 100px;
+        margin-top: 5px;
+    }
+
+    .box1 {
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+        padding: 10px;
+    }
+
+    .box2 {
+        background-color: #4297a0;
+        border-radius: 15px;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+        padding: 10px;
+    }
+
+    h2 {
+        color: #000000;
+        text-decoration: none;
+    }
+
+    h2 a {
+        color: #000000;
+        text-decoration: none;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="box1">
+        <h2><a href="../HTMLprior/indexPRIOR.html">PRIORITA' D'INTERVENTO</a></h2>
+    </div>
+    <div class="box2">
+        <h2><a href="../HTMLgest/indexGEST.html">PROPOSTA GESTIONALE</a></h2>
+    </div>
+</div>
+
+<div style="height: 20px;"></div>
+
+
+<!-- mappa -->
+
+        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+       
+        <style>
+          
+            
+            #legend {
+                position: absolute;
+                bottom: 150px;
+                left: 20px;
+                z-index: 1000;
+                height: 250px;
+                width: 220px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <img id="legend" src="legenda.png" alt="Legenda">
+        
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet-measure/dist/leaflet-measure.min.js"></script>
+        <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+        <script src="https://unpkg.com/leaflet-search/dist/leaflet-search.min.js"></script>
+
+
+        
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        #map {
+            width: auto;
+            height: 480px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/CensimentoNoventaPd11200_1.js"></script>
+        <script src="data/Comuni_Veneto_1_2.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[45.415078484582565,11.95001562720381],[45.416952225455034,11.95405480932016]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_GoogleSatellite_0');
+        map.getPane('pane_GoogleSatellite_0').style.zIndex = 400;
+        var layer_GoogleSatellite_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleSatellite_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_GoogleSatellite_0;
+        map.addLayer(layer_GoogleSatellite_0);
+        function pop_CensimentoNoventaPd11200_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DATA RILIEVO</th>\
+                        <td>' + (feature.properties['DATA RILIEVO'] !== null ? autolinker.link(feature.properties['DATA RILIEVO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LOCALITA’</th>\
+                        <td>' + (feature.properties['LOCALITA’'] !== null ? autolinker.link(feature.properties['LOCALITA’'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NOME SCIENTIFICO</th>\
+                        <td>' + (feature.properties['NOME SCIENTIFICO'] !== null ? autolinker.link(feature.properties['NOME SCIENTIFICO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NOME COMUNE</th>\
+                        <td>' + (feature.properties['NOME COMUNE'] !== null ? autolinker.link(feature.properties['NOME COMUNE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">SITO DI CRESCITA</th>\
+                        <td>' + (feature.properties['SITO DI CRESCITA'] !== null ? autolinker.link(feature.properties['SITO DI CRESCITA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CARATTERI GENERALI</th>\
+                        <td>' + (feature.properties['CARATTERI GENERALI'] !== null ? autolinker.link(feature.properties['CARATTERI GENERALI'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">STATO VEGETATIVO</th>\
+                        <td>' + (feature.properties['STATO VEGETATIVO'] !== null ? autolinker.link(feature.properties['STATO VEGETATIVO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO cm</th>\
+                        <td>' + (feature.properties['DIAMETRO cm'] !== null ? autolinker.link(feature.properties['DIAMETRO cm'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">H m</th>\
+                        <td>' + (feature.properties['H m'] !== null ? autolinker.link(feature.properties['H m'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COEFF. SNELLEZZA</th>\
+                        <td>' + (feature.properties['COEFF. SNELLEZZA'] !== null ? autolinker.link(feature.properties['COEFF. SNELLEZZA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALTEZZA FUSTO LIBERO m</th>\
+                        <td>' + (feature.properties['ALTEZZA FUSTO LIBERO m'] !== null ? autolinker.link(feature.properties['ALTEZZA FUSTO LIBERO m'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO CHIOMA m</th>\
+                        <td>' + (feature.properties['DIAMETRO CHIOMA m'] !== null ? autolinker.link(feature.properties['DIAMETRO CHIOMA m'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">INTERFERENZE 1</th>\
+                        <td>' + (feature.properties['INTERFERENZE 1'] !== null ? autolinker.link(feature.properties['INTERFERENZE 1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">INTERFERENZE 2</th>\
+                        <td>' + (feature.properties['INTERFERENZE 2'] !== null ? autolinker.link(feature.properties['INTERFERENZE 2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">INTERFERENZE 3</th>\
+                        <td>' + (feature.properties['INTERFERENZE 3'] !== null ? autolinker.link(feature.properties['INTERFERENZE 3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CPC</th>\
+                        <td>' + (feature.properties['CPC'] !== null ? autolinker.link(feature.properties['CPC'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">RICONTROLLO</th>\
+                        <td>' + (feature.properties['RICONTROLLO'] !== null ? autolinker.link(feature.properties['RICONTROLLO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROPOSTA GESTIONALE</th>\
+                        <td>' + (feature.properties['PROPOSTA GESTIONALE'] !== null ? autolinker.link(feature.properties['PROPOSTA GESTIONALE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PRIORITA’</th>\
+                        <td>' + (feature.properties['PRIORITA’'] !== null ? autolinker.link(feature.properties['PRIORITA’'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NOTE_1</th>\
+                        <td>' + (feature.properties['NOTE_1'] !== null ? autolinker.link(feature.properties['NOTE_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">VTA</th>\
+                        <td>' + (feature.properties['VTA'] !== null ? autolinker.link(feature.properties['VTA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_CensimentoNoventaPd11200_1_0(feature) {
+            switch(String(feature.properties['PROPOSTA GESTIONALE'])) {
+                default:
+                    return {
+                pane: 'pane_CensimentoNoventaPd11200_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,197,236,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,197,236,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'consolidamento':
+                    return {
+                pane: 'pane_CensimentoNoventaPd11200_1',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Intervento gestionale':
+                    return {
+                pane: 'pane_CensimentoNoventaPd11200_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,222,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Intervento gestionale condizionato':
+                    return {
+                pane: 'pane_CensimentoNoventaPd11200_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,127,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Nessun intervento':
+                    return {
+                pane: 'pane_CensimentoNoventaPd11200_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,176,74,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Rimozione per diradamento':
+                    return {
+                pane: 'pane_CensimentoNoventaPd11200_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(182,0,133,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sostituzione':
+                    return {
+                pane: 'pane_CensimentoNoventaPd11200_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sostituzione per grave compromissione':
+                    return {
+                pane: 'pane_CensimentoNoventaPd11200_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(227,26,28,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,0,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sostituzione per gravi interferenze':
+                    return {
+                pane: 'pane_CensimentoNoventaPd11200_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,26,28,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sostituzione programmata':
+                    return {
+                pane: 'pane_CensimentoNoventaPd11200_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,127,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Valutazione di stabilita':
+                    return {
+                pane: 'pane_CensimentoNoventaPd11200_1',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(227,26,28,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,234,79,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Valutazione di stabilita condizionata':
+                    return {
+                pane: 'pane_CensimentoNoventaPd11200_1',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(251,154,153,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_CensimentoNoventaPd11200_1');
+        map.getPane('pane_CensimentoNoventaPd11200_1').style.zIndex = 401;
+        map.getPane('pane_CensimentoNoventaPd11200_1').style['mix-blend-mode'] = 'normal';
+        var layer_CensimentoNoventaPd11200_1 = new L.geoJson(json_CensimentoNoventaPd11200_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_CensimentoNoventaPd11200_1',
+            layerName: 'layer_CensimentoNoventaPd11200_1',
+            pane: 'pane_CensimentoNoventaPd11200_1',
+            onEachFeature: pop_CensimentoNoventaPd11200_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_CensimentoNoventaPd11200_1_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_CensimentoNoventaPd11200_1);
+        map.addLayer(layer_CensimentoNoventaPd11200_1);
+        function pop_Comuni_Veneto_1_2(feature, layer) {
+        }
+
+        function style_Comuni_Veneto_1_2_0() {
+            return {
+                pane: 'pane_Comuni_Veneto_1_2',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,0.3803921568627451)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Comuni_Veneto_1_2');
+        map.getPane('pane_Comuni_Veneto_1_2').style.zIndex = 402;
+        map.getPane('pane_Comuni_Veneto_1_2').style['mix-blend-mode'] = 'normal';
+        var layer_Comuni_Veneto_1_2 = new L.geoJson(json_Comuni_Veneto_1_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Comuni_Veneto_1_2',
+            layerName: 'layer_Comuni_Veneto_1_2',
+            pane: 'pane_Comuni_Veneto_1_2',
+            onEachFeature: pop_Comuni_Veneto_1_2,
+            style: style_Comuni_Veneto_1_2_0,
+        });
+        bounds_group.addLayer(layer_Comuni_Veneto_1_2);
+        map.addLayer(layer_Comuni_Veneto_1_2);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Comuni_Veneto_1_2.png" /> Comuni_Veneto_1': layer_Comuni_Veneto_1_2,'Censimento Noventa Pd 1-1200<br /><table><tr><td style="text-align: center;"><img src="legend/CensimentoNoventaPd11200_1_0.png" /></td><td></td></tr><tr><td style="text-align: center;"><img src="legend/CensimentoNoventaPd11200_1_consolidamento1.png" /></td><td>consolidamento</td></tr><tr><td style="text-align: center;"><img src="legend/CensimentoNoventaPd11200_1_Interventogestionale2.png" /></td><td>Intervento gestionale</td></tr><tr><td style="text-align: center;"><img src="legend/CensimentoNoventaPd11200_1_Interventogestionalecondizionato3.png" /></td><td>Intervento gestionale condizionato</td></tr><tr><td style="text-align: center;"><img src="legend/CensimentoNoventaPd11200_1_Nessunintervento4.png" /></td><td>Nessun intervento</td></tr><tr><td style="text-align: center;"><img src="legend/CensimentoNoventaPd11200_1_Rimozioneperdiradamento5.png" /></td><td>Rimozione per diradamento</td></tr><tr><td style="text-align: center;"><img src="legend/CensimentoNoventaPd11200_1_Sostituzione6.png" /></td><td>Sostituzione</td></tr><tr><td style="text-align: center;"><img src="legend/CensimentoNoventaPd11200_1_Sostituzionepergravecompromissione7.png" /></td><td>Sostituzione per grave compromissione</td></tr><tr><td style="text-align: center;"><img src="legend/CensimentoNoventaPd11200_1_Sostituzionepergraviinterferenze8.png" /></td><td>Sostituzione per gravi interferenze</td></tr><tr><td style="text-align: center;"><img src="legend/CensimentoNoventaPd11200_1_Sostituzioneprogrammata9.png" /></td><td>Sostituzione programmata</td></tr><tr><td style="text-align: center;"><img src="legend/CensimentoNoventaPd11200_1_Valutazionedistabilita10.png" /></td><td>Valutazione di stabilita</td></tr><tr><td style="text-align: center;"><img src="legend/CensimentoNoventaPd11200_1_Valutazionedistabilitacondizionata11.png" /></td><td>Valutazione di stabilita condizionata</td></tr></table>': layer_CensimentoNoventaPd11200_1,"Google Satellite": layer_GoogleSatellite_0,}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_CensimentoNoventaPd11200_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['id'] !== null?String('<div style="color: #ffee01; font-size: 8pt; font-weight: bold; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['id']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_CensimentoNoventaPd11200_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        map.addControl(new L.Control.Search({
+            layer: layer_CensimentoNoventaPd11200_1,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'id'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        resetLabels([layer_CensimentoNoventaPd11200_1]);
+        map.on("zoomend", function(){
+            resetLabels([layer_CensimentoNoventaPd11200_1]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_CensimentoNoventaPd11200_1]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_CensimentoNoventaPd11200_1]);
+        });
+        </script>
+    </body>
+
+
+
+    <div style="height: 0px;"></div>
+
+    <footer>
+        <div class="footer-title">CONTATTI</div>
+        <div class="footer-text">Ufficio Manutenzioni - Comune di Noventa Padovana</div>
+        <a href="mailto:ufficiomanutenzioni@comune.noventa.pd.it" class="footer-small-text">ufficiomanutenzioni@comune.noventa.pd.it</a><br>
+        <div class="footer-small-text">Via Roma 4, 35127 Noventa Padovana</div>
+    </footer>
+
+</html>
+
+

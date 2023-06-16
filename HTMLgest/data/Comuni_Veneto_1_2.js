@@ -1,0 +1,1 @@
+var json_Comuni_Veneto_1_2 = {"type":"FeatureCollection","name":"Comuni_Veneto_1_2","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"features":[]}
